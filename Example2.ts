@@ -12,8 +12,6 @@ async function searchInBrowser() {
         // Find the search box, type a query, and press Enter
         const searchBox = await driver.findElement(By.name('q'));
         await searchBox.sendKeys('TypeScript Selenium example', Key.RETURN);
-
-        // Wait for results to load (optional, based on your needs)
         await driver.sleep(3000); // Adjust the sleep time as necessary
     } catch (error) {
         console.error('An error occurred:', error);
