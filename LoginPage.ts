@@ -1,24 +1,27 @@
-import { Builder, WebDriver } from 'selenium-webdriver';
-import { LoginPage } from './/PageClass.ts';
+import { By, WebDriver, WebElement } from "selenium-webdriver";
 
+export class LoginPage {
+    private driver: WebDriver;
+    private usernameField: By = By.id('email');
+    private passwordField: By = By.id('password');
+    private loginButton: By = By.name('login');
 
-describe('Login Functionality', () => {
-    let driver: WebDriver;
-    let loginPage: LoginPage;
+    constructor(driver: WebDriver) {
+        this.driver = driver;
+    }
 
-    beforeAll(async () => {
-        driver = await new Builder().forBrowser('chrome').build();
-        loginPage = new LoginPage(driver);
-        await driver.get('https://test-login-app.vercel.app/');}, 10000); // Increased timeout for setup
+    async enterUsername(username: string): Promise<void> {
+        const usernameInput: WebElement = await this.driver.findElement(this.usernameField);
+        await usernameInput.sendKeys(username);
+    }
 
-    afterAll(async () => {
-        await driver.quit();
-    });
+    async enterPassword(password: string): Promise<void> {
+        const passwordInput: WebElement = await this.driver.findElement(this.passwordField);
+        await passwordInput.sendKeys(password);
+    }
 
-    test('should successfully log in with valid credentials', async () => {
-        await loginPage.login('testuser', 'password123');
-        // Add assertions here, e.g., check for redirection or element presence
-        const currentUrl = await driver.getCurrentUrl();
-        expect(currentUrl).toContain('/dashboard'); // Example assertion
-    });
-});
+    async clickLogin(): Promise<void> {
+        const loginBtn: WebElement = await this.driver.findElement(this.loginButton);
+        await loginBtn.click();
+    }
+}
